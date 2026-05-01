@@ -1,0 +1,60 @@
+<main class="main">
+	<div class="container">
+		<h1>{{title}}</h1>
+		<ngb-alert type="success" *ngIf="msg !=''" (close)="msg=''">{{msg}}</ngb-alert>
+		<button class="btn btn-primary mt-3" (click)="visible = !visible">Añadir lista</button>
+		<select class="ms-2" name="mostrarLista" [(ngModel)]="listasVisibles">
+			<option value="visibles">Visibles</option>
+			<option value="ocultas">Ocultas</option>
+			<option value="todas">Todas</option>
+		</select>
+		<div>
+			<div [hidden]="!visible" class="mt-3 mb-3">
+				<form #formLista="ngForm" (ngSubmit)="onSubmit(formLista)" class="d-flex gap-2">
+					<label>Nombre:</label>
+					<input type="text" name="nombre" [(ngModel)]="lista.nombre" required>
+					<label>Descripción:</label>
+					<input type="text" name="descripcion" [(ngModel)]="lista.descripcion" required>
+					<label>Color</label>
+					<select name="color" [(ngModel)]="lista.color" required>
+						<option value="rojo">rojo</option>
+						<option value="verde">verde</option>
+						<option value="amarillo">amarillo</option>
+						<option value="naranja">naranja</option>
+						<option value="azul">azul</option>
+					</select>
+					<label>Visibilidad</label>
+					<select name="visible" [(ngModel)]="lista.visible">
+						<option value="visible">visible</option>
+						<option value="oculto">oculto</option>
+					</select>
+					<button type="submit" class="btn btn-success">Enviar</button>
+				</form>
+			</div>
+			<div class="row mt-3">
+				<div class="col-md-4 mb-3" *ngFor="let lista of listas">
+					<div class="card h-100">
+						<app-lista
+							*ngIf="listasVisibles === 'visibles' && lista.visible || listasVisibles === 'ocultas' && !lista.visible || listasVisibles === 'todas'"
+							[lista]="lista" (eliminar)="abrirModal(modalConfirmar, lista)"
+							(actualizar)="actualizar(lista)"
+							(cambiarVisibilidad)="cambiarVisibilidad(lista)"></app-lista>
+					</div>
+				</div>
+			</div>
+		</div>
+		<ng-template #modalConfirmar let-modal>
+			<div class="modal-header">
+				<h4 class="modal-title">Confirmar</h4>
+				<button type="button" class="btn-close" data-bs-dismiss="modal.dismiss()"></button>
+			</div>
+			<div class="modal-body">
+				<p>¿Seguro de eliminar esta lista?</p>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-secondary" (click)="modal.dismiss()">Cancelar</button>
+				<button class="btn btn-danger" (click)="modal.close('ok')">Aceptar</button>
+			</div>
+		</ng-template>
+	</div>
+</main>

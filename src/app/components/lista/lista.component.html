@@ -1,0 +1,37 @@
+<div class="card" [ngStyle]="{borderColor: lista.color}">
+    <div class="card-body">
+        <div class="d-flex justify-content-between">
+            <h5 class="card-title">{{ lista.nombre }}</h5>
+            <button class="btn btn-primary" (click)="visible = !visible">+</button>
+        </div>
+        <div class="mt-2 mb-2" [hidden]="!visible">
+            <form #formTarea="ngForm" (ngSubmit)="onSubmit(formTarea)">
+                <div class="d-flex gap-2 justify-content-between">
+                    <input placeholder="Nombre de tarea" type="text" name="nombre" [(ngModel)]="tarea.nombre" required>
+                    <button type="submit" class="btn btn-success">Enviar</button>
+                </div>
+            </form>
+        </div>
+        <p class="card-text" [hidden]="!lista.visible">{{ lista.descripcion }}</p>
+        <p class="card-text" [hidden]="!lista.visible">{{ lista.fecha }}</p>
+        <h6 class="mt-2 mb-2" [hidden]="!lista.visible" *ngIf="lista.tareas.length > 0">Completadas</h6>
+        <div [hidden]="!lista.visible" *ngFor="let tarea of lista.tareas">
+            <app-tarea *ngIf="tarea.estado === 'completa'" [tarea]="tarea"
+                (eliminar)="eliminarTarea(tarea)"></app-tarea>
+        </div>
+        <h6 class="mt-2 mb-2" [hidden]="!lista.visible" *ngIf="lista.tareas.length > 0">Por hacer</h6>
+        <div [hidden]="!lista.visible" *ngFor="let tarea of lista.tareas">
+            <app-tarea *ngIf="tarea.estado === 'incompleta'" [tarea]="tarea" (eliminar)="eliminarTarea(tarea)"
+                (completada)="completarTarea(tarea)"></app-tarea>
+        </div>
+        <p [hidden]="!lista.visible" *ngIf="lista.tareas.length === 0" class="fw-bold">Sin tareas...</p>
+        <div class="d-flex gap-2 mt-2">
+            <button class="btn btn-danger" (click)="eliminarLista()">Eliminar</button>
+            <button class="btn btn-primary" (click)="actualizarLista()">Actualizar</button>
+            <button *ngIf="!lista.visible" class="btn btn-success" (click)="cambiarVisibilidadLista()">Ver
+                detalles</button>
+            <button *ngIf="lista.visible" class="btn btn-danger" (click)="cambiarVisibilidadLista()">Ocultar
+                detalles</button>
+        </div>
+    </div>
+</div>
