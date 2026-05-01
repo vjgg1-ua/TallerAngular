@@ -105,11 +105,22 @@ export class AppComponent implements OnInit {
 
 	cambiarVisibilidad(lista: Lista): void {
 		this.listas = this.listas.map(l => {
-			if (l.nombre == lista.nombre) {
+			if (l.identificador == lista.identificador) {
 				return { ...l, visible: !l.visible };
 			}
 			return l;
 		})
+	}
+
+	//Getter --> como una propiedad calculada
+	get listasFiltradas(): Lista[] {
+		if (this.listasVisibles === 'visibles') {
+			return this.listas.filter(l => l.visible);
+		}
+		if (this.listasVisibles === 'ocultas') {
+			return this.listas.filter(l => !l.visible);
+		}
+		return this.listas;
 	}
 
 	abrirModal(modal: any, lista: Lista) {

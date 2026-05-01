@@ -32,13 +32,9 @@
 				</form>
 			</div>
 			<div class="row mt-3">
-				<div class="col-md-4 mb-3" *ngFor="let lista of listas">
+				<div class="col-md-4 mb-3" *ngFor="let lista of listasFiltradas">
 					<div class="card h-100">
-						<app-lista
-							*ngIf="listasVisibles === 'visibles' && lista.visible || listasVisibles === 'ocultas' && !lista.visible || listasVisibles === 'todas'"
-							[lista]="lista" (eliminar)="abrirModal(modalConfirmar, lista)"
-							(actualizar)="actualizar(lista)"
-							(cambiarVisibilidad)="cambiarVisibilidad(lista)"></app-lista>
+						<app-lista [lista]="lista" (eliminar)="abrirModal(modalConfirmar, lista)" (actualizar)="actualizar(lista)" (cambiarVisibilidad)="cambiarVisibilidad(lista)"></app-lista>
 					</div>
 				</div>
 			</div>
