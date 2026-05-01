@@ -16,9 +16,9 @@ export class AppComponent implements OnInit {
 
 	//Array de listas general
 	listas: Lista[] = [
-		new Lista('Compras', 'Lista del súper', 'red', false, 1, "", []),
-		new Lista('Trabajo', 'Tareas pendientes', 'blue', false, 2, "", []),
-		new Lista('Viaje', 'Cosas para llevar', 'green', false, 3, "", [])
+		new Lista('Compras', 'Lista del súper', 'red', true, 1, "10/02/2025", []),
+		new Lista('Trabajo', 'Tareas pendientes', 'blue', false, 2, "12/02/2022", []),
+		new Lista('Viaje', 'Cosas para llevar', 'green', false, 3, "10/05/2026", [])
 	];
 
 	//lista para enlazar al formulario
