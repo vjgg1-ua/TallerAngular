@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, output, Output } from '@angular/core';
 import { Lista } from './models/lista';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -9,6 +9,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 
 export class AppComponent implements OnInit {
+
 	title = 'appListas';
 	msg = "Hola, bienvenido a mi proyecto en Angular";
 	habilitarEdicion = false;
@@ -30,9 +31,19 @@ export class AppComponent implements OnInit {
 	constructor(private modalService: NgbModal) { }
 
 	ngOnInit(): void {
+		// Usamos localStorage para guardar las listas
+		const guardadas = localStorage.getItem('listas');
+		if (guardadas) {
+			this.listas = JSON.parse(guardadas);
+		}
 		setTimeout(() => {
 			this.msg = "";
 		}, 5000)
+	}
+
+	// Guarda el item 'listas' en localStorage
+	guardarEnStorage(): void {
+		localStorage.setItem('listas', JSON.stringify(this.listas));
 	}
 
 	formalizarColor(lista: Lista): Lista {
@@ -76,23 +87,33 @@ export class AppComponent implements OnInit {
 
 				this.lista = new Lista("", "", "", true, 0, this.formatearFecha(new Date()), []);
 
-				if (cantidad + 1 == this.listas.length)
+				if (cantidad + 1 == this.listas.length) {
 					this.msg = "Se ha añadido correctamente la lista"
+				}
 				else
 					this.msg = "No se ha podido añadir a la lista general"
+
 			}
 			else {
 				this.lista = this.formalizarColor(this.lista);
 				this.lista.fecha = this.formatearFecha(new Date());
 				this.listas[this.indiceListaModificar] = { ...this.lista };
+
+
+				this.msg = "Se ha añadido correctamente la lista"
 				this.msg = "Se ha actualizado correctamente la lista";
 			}
+
+			this.guardarEnStorage();
 
 		}
 	}
 
 	eliminar(lista: Lista): void {
 		this.listas = this.listas.filter(l => l != lista);
+
+		this.guardarEnStorage();
+
 		this.msg = "Se ha eliminado correctamente la lista";
 	}
 
@@ -101,6 +122,8 @@ export class AppComponent implements OnInit {
 		this.indiceListaModificar = this.listas.indexOf(lista);
 		this.habilitarEdicion = true;
 		this.visible = true;
+
+		this.guardarEnStorage();
 	}
 
 	cambiarVisibilidad(lista: Lista): void {
@@ -108,6 +131,9 @@ export class AppComponent implements OnInit {
 			if (l.identificador == lista.identificador) {
 				return { ...l, visible: !l.visible };
 			}
+
+			this.guardarEnStorage();
+
 			return l;
 		})
 	}

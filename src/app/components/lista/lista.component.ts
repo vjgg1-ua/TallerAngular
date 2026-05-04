@@ -13,6 +13,8 @@ export class ListaComponent {
     @Output() eliminar = new EventEmitter<void>();
     @Output() actualizar = new EventEmitter<void>();
     @Output() cambiarVisibilidad = new EventEmitter<void>();
+    @Output() guardar = new EventEmitter<void>();
+
 
     visible: boolean = false;
     tarea: Tarea = new Tarea(0, "", "", "incompleta");
@@ -41,6 +43,8 @@ export class ListaComponent {
         this.visible = false;
         formTarea.reset();
         this.tarea = new Tarea(0, "", "", "incompleta");
+        
+        this.guardar.emit(); // Para que se guarden las tareas tmb        
     }
 
     completarTarea(tarea: Tarea): void {
