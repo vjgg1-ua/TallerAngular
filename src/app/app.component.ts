@@ -105,8 +105,13 @@ export class AppComponent implements OnInit {
 			}
 
 			this.guardarEnStorage();
-
+			
+			return
 		}
+
+		alert("Por favor, rellena todos los campos obligatorios");
+
+		
 	}
 
 	eliminar(lista: Lista): void {
